@@ -24,7 +24,7 @@ describe('Autocomplete accepts various endpoint types', () => {
 
     jest.runTimersToTime(THROTTLE_VALUE);
 
-    expect(Request.mock.calls[0][0]).toEqual(`${API_END_POINT}${queryKey}`);
+    expect(Request.mock.calls[0][0]).toEqual(`${API_END_POINT}/${queryKey}`);
   });
 
   it('accepts a parsing function', () => {
@@ -58,7 +58,7 @@ describe('Autocomplete handles requests\' lifecycle', () => {
 
     jest.runTimersToTime(THROTTLE_VALUE);
 
-    expect(Request.mock.calls[0][0]).toEqual(`${API_END_POINT}hello`);
+    expect(Request.mock.calls[0][0]).toEqual(`${API_END_POINT}/hello`);
   });
 
   it('invokes request\'s abort method', () => {
@@ -69,8 +69,10 @@ describe('Autocomplete handles requests\' lifecycle', () => {
 
     ac.request('hello');
 
+    jest.runTimersToTime(THROTTLE_VALUE);
+
     expect(Request.mock.instances[0].abort).toHaveBeenCalled();
-    expect(Request.mock.calls[0][0]).toEqual(`${API_END_POINT}hi`);
-    expect(Request.mock.calls[0][1]).toEqual(`${API_END_POINT}hello`);
+    expect(Request.mock.calls[0][0]).toEqual(`${API_END_POINT}/hi`);
+    expect(Request.mock.calls[1][0]).toEqual(`${API_END_POINT}/hello`);
   });
 });
