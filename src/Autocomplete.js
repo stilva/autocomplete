@@ -1,7 +1,7 @@
 import Request from './Request';
 
 export default class Autocomplete {
-  constructor(apiEndpoint, throttleTime) {
+  constructor(apiEndpoint, throttleTime = 150) {
     this._parseURI = typeof apiEndpoint === 'string'
       ? preNormaliseEndpoint(apiEndpoint)
       : apiEndpoint;
