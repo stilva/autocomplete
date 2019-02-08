@@ -3,6 +3,8 @@ export default class Request {
     const scope = this;
     const xhr = new XMLHttpRequest();
 
+    this._xhr = xhr;
+
     xhr.responseType = 'json';
 
     xhr.addEventListener('load', function(e) {
@@ -10,20 +12,16 @@ export default class Request {
     });
 
     xhr.addEventListener('error', function(e) {
-      try {
-        scope._onError.call(scope, this.response);
-      } catch(e) {}
+      scope._onError.call(scope, this.response);
     });
 
     xhr.open('GET', uri);
 
     xhr.send();
-
-    this._xhr = xhr;
   }
 
   abort() {
-    this._xhr.abort();
+    this._xhr && this._xhr.abort();
   }
 
   onComplete(callback) {
