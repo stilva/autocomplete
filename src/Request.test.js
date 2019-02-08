@@ -28,7 +28,11 @@ describe('Request object passes xhr responses to callbacks', () => {
       .replyWithError(null);
   });
 
-  test('query receives results', done => {
+  afterAll(() => {
+    nockScope.cleanAll();
+  });
+
+  it('calls onComplete with results', done => {
     const req = new Request(`${API_END_POINT}?query=success`);
     req.onComplete(function onRequestComplete(res) {
       expect(res).toHaveProperty('result');
@@ -38,7 +42,7 @@ describe('Request object passes xhr responses to callbacks', () => {
     });
   });
 
-  test('query receives no result', done => {
+  it('calls onComplete with empty result', done => {
     const req = new Request(`${API_END_POINT}?query=failed`);
     req.onComplete(function onRequestComplete(res) {
       expect(res).toHaveProperty('result');
@@ -48,7 +52,7 @@ describe('Request object passes xhr responses to callbacks', () => {
     });
   });
 
-  test('invokes onError on errors', done => {
+  it('calls onError', done => {
     const onError = jest.fn();
     const onComplete = jest.fn();
 
@@ -63,8 +67,4 @@ describe('Request object passes xhr responses to callbacks', () => {
       done();
     }, 100);
   });
-
-  afterAll(() => {
-    nockScope.cleanAll();
-  })
 });
