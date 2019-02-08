@@ -9,6 +9,9 @@ export default class Autocomplete {
     this._throttleTime = throttleTime;
 
     this._activeRequest = null;
+
+    this._onError = noop;
+    this._onComplete = noop;
   }
 
   request(key) {
@@ -18,7 +21,17 @@ export default class Autocomplete {
         this._activeRequest.abort();
       }
       this._activeRequest = new Request(this._parseURI(key));
+      this._activeRequest.onError(this._onError);
+      this._activeRequest.onComplete(this._onComplete);
     }, this._throttleTime);
+  }
+
+  onComplete(cb) {
+    this._onComplete = cb;
+  }
+
+  onError(cb) {
+    this._onError = cb;
   }
 };
 
@@ -35,3 +48,5 @@ function normaliseEndpoint(apiEndpoint) {
 
   return `${apiEndpoint}/`;
 }
+
+function noop() {}

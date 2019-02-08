@@ -8,11 +8,11 @@ export default class Request {
     xhr.responseType = 'json';
 
     xhr.addEventListener('load', function(e) {
-      scope._onComplete.call(scope, this.response);
+      scope._onComplete && scope._onComplete.call(scope, this.response);
     });
 
     xhr.addEventListener('error', function(e) {
-      scope._onError.call(scope, this.response);
+      scope._onError && scope._onError.call(scope, this.response);
     });
 
     xhr.open('GET', uri);
