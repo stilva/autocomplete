@@ -16,6 +16,9 @@ export default class Autocomplete {
 
   request(key) {
     clearTimeout(this._intervalID);
+
+    if(key.length == 0) return;
+
     this._intervalID = setTimeout(_ => {
       if(this._activeRequest) {
         this._activeRequest.abort();

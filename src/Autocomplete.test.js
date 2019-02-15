@@ -37,6 +37,14 @@ describe('Autocomplete accepts various endpoint types', () => {
 
     expect(Request.mock.calls[0][0]).toEqual(`${API_END_POINT}?query=${queryKey}`);
   });
+
+  it('ignores empty keys', () => {
+    const ac = new Autocomplete(API_END_POINT);
+    ac.request('');
+
+    jest.runTimersToTime(THROTTLE_VALUE);
+    expect(Request.mock.calls.length).toEqual(0);
+  });
 });
 
 describe('Autocomplete handles requests\' lifecycle', () => {
