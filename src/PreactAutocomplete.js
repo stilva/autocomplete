@@ -15,13 +15,23 @@ export default class PreactAutocomplete extends Component {
     };
 
     this.autoComplete = new Autocomplete(props.uri, props.throttleTime);
-    this.autoComplete.onComplete(result => this.setState({searchResults: {result, isError: false}}));
+    this.autoComplete.onComplete(this.onSuccess.bind(this));
     this.autoComplete.onError(_ => this.setState({searchResults: {isError: true}}));
+  }
+
+  onSuccess(result = []) {
+    this.setState({searchResults: {result, isError: false}});
   }
 
   render() {
     return this.props.children[0](
-      key => this.autoComplete.request(key),
+      (key = '') => {
+        if(key.length === 0) {
+          this.onSuccess([]);
+        } else {
+          this.autoComplete.request(key);
+        }
+      },
       this.state.searchResults
     );
   }
